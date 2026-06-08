@@ -344,9 +344,9 @@ def open_external_app():
     sound_manager.play_sound('button')
     if jeu.process_launched==False:
         if fichier_exe==True:
-            proc = subprocess.Popen([os.path.join(assets_dir, 'assets', 'sisyphe.io_editor_v2.0.exe')])
+            proc = subprocess.Popen([os.path.join(assets_dir, 'assets', 'editor.exe')])
         else:
-            proc = subprocess.Popen(["python", os.path.join(assets_dir, 'assets', 'sisyphe.io_editor_v2.0.py')])
+            proc = subprocess.Popen(["python", os.path.join(assets_dir, 'assets', 'editor.py')])
         jeu.process_launched=True
         monitor_thread = threading.Thread(target=monitor_subprocess, args=(proc,))
         monitor_thread.start()
