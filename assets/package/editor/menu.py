@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
 """The editor menu bar and keyboard shortcuts."""
+import sys
 import tkinter as tk
 
 from . import context as ectx
 from . import tools
 from . import files
 from . import toggles
+
+# macOS uses Command (⌘) where other platforms use Control.
+_MOD = 'Command' if sys.platform == 'darwin' else 'Control'
+_ACCEL = 'Cmd' if sys.platform == 'darwin' else 'Ctrl'
+
+
+def _accel(combo):
+    """Accelerator label, e.g. 'Cmd+N' on macOS, 'Ctrl+N' elsewhere."""
+    return f"{_ACCEL}+{combo}"
 
 
 def bind_keys():
@@ -38,21 +48,21 @@ def bind_keys():
     window.bind('V', tools.select_box)
     window.bind('<BackSpace>', tools.select_delete)
 
-    window.bind_all('<Control-n>', lambda event: files.new_level())
-    window.bind_all('<Control-o>', lambda event: files.open_level())
-    window.bind_all('<Control-s>', lambda event: files.save())
-    window.bind_all('<Control-Shift-s>', lambda event: files.save_as())
-    window.bind_all('<Control-t>', lambda event: toggles.toggle_textures())
-    window.bind_all('<Control-u>', lambda event: toggles.toggle_music())
-    window.bind_all('<Control-i>', lambda event: toggles.toggle_sounds())
+    window.bind_all(f'<{_MOD}-n>', lambda event: files.new_level())
+    window.bind_all(f'<{_MOD}-o>', lambda event: files.open_level())
+    window.bind_all(f'<{_MOD}-s>', lambda event: files.save())
+    window.bind_all(f'<{_MOD}-Shift-s>', lambda event: files.save_as())
+    window.bind_all(f'<{_MOD}-t>', lambda event: toggles.toggle_textures())
+    window.bind_all(f'<{_MOD}-u>', lambda event: toggles.toggle_music())
+    window.bind_all(f'<{_MOD}-i>', lambda event: toggles.toggle_sounds())
 
-    window.bind_all('<Control-N>', lambda event: files.new_level())
-    window.bind_all('<Control-O>', lambda event: files.open_level())
-    window.bind_all('<Control-S>', lambda event: files.save())
-    window.bind_all('<Control-Shift-S>', lambda event: files.save_as())
-    window.bind_all('<Control-T>', lambda event: toggles.toggle_textures())
-    window.bind_all('<Control-U>', lambda event: toggles.toggle_music())
-    window.bind_all('<Control-I>', lambda event: toggles.toggle_sounds())
+    window.bind_all(f'<{_MOD}-N>', lambda event: files.new_level())
+    window.bind_all(f'<{_MOD}-O>', lambda event: files.open_level())
+    window.bind_all(f'<{_MOD}-S>', lambda event: files.save())
+    window.bind_all(f'<{_MOD}-Shift-S>', lambda event: files.save_as())
+    window.bind_all(f'<{_MOD}-T>', lambda event: toggles.toggle_textures())
+    window.bind_all(f'<{_MOD}-U>', lambda event: toggles.toggle_music())
+    window.bind_all(f'<{_MOD}-I>', lambda event: toggles.toggle_sounds())
 
 
 def build():
@@ -81,18 +91,18 @@ def build():
     menu_bar.add_cascade(label=lang.music_menu, menu=music_menu)
 
     # Création des options de la case "Fichier"
-    file_menu.add_command(label=lang.new_button, command=files.new_level, accelerator="Ctrl+N")
-    file_menu.add_command(label=lang.open_button, command=lambda: files.open_level(), accelerator="Ctrl+O")
-    file_menu.add_command(label=lang.save_button, command=files.save, accelerator="Ctrl+S")
-    file_menu.add_command(label=lang.save_as_button, command=files.save_as, accelerator="Ctrl+Shift+S")
+    file_menu.add_command(label=lang.new_button, command=files.new_level, accelerator=_accel("N"))
+    file_menu.add_command(label=lang.open_button, command=lambda: files.open_level(), accelerator=_accel("O"))
+    file_menu.add_command(label=lang.save_button, command=files.save, accelerator=_accel("S"))
+    file_menu.add_command(label=lang.save_as_button, command=files.save_as, accelerator=_accel("Shift+S"))
     file_menu.add_command(label=lang.leave_button, command=files.confirm_close, accelerator="ALT+F4")
 
     # Création des options de la case "Textures"
-    textures_menu.add_command(label=lang.toggle_textures_button, command=toggles.toggle_textures, accelerator="Ctrl+T")
+    textures_menu.add_command(label=lang.toggle_textures_button, command=toggles.toggle_textures, accelerator=_accel("T"))
 
     # Création des options de la case "Musique & Sons"
-    music_menu.add_command(label=lang.toggle_music_button, command=toggles.toggle_music, accelerator="Ctrl+U")
-    music_menu.add_command(label=lang.toggle_sounds_button, command=toggles.toggle_sounds, accelerator="Ctrl+I")
+    music_menu.add_command(label=lang.toggle_music_button, command=toggles.toggle_music, accelerator=_accel("U"))
+    music_menu.add_command(label=lang.toggle_sounds_button, command=toggles.toggle_sounds, accelerator=_accel("I"))
 
     # Création des options de la case "Edition"
     # Menu Basique

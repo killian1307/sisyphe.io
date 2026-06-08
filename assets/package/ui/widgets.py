@@ -2,13 +2,11 @@
 """Shared UI helpers: the styled-button factory, the return-to-menu handler and
 the widget-cleanup routines used when switching screens.
 
-On macOS the native Aqua ``tk.Button`` ignores ``bg``/``relief``/``borderwidth``
-(it always draws a native button, which is why custom-colored buttons looked
-broken there). So on macOS we render the button from a ``tk.Label`` — which Aqua
-*does* honor — with hover/press bindings to reproduce the Windows look. On
-Windows and Linux the classic ``tk.Button`` is used unchanged.
+Every button is rendered from a ``tk.Label`` (not ``tk.Button``) with hover/press
+bindings, so the look is *identical on every platform*. This is required because
+macOS's native Aqua ``tk.Button`` ignores ``bg``/``relief``/``borderwidth`` and
+draws its own button, whereas a ``tk.Label`` honors them everywhere.
 """
-import sys
 import tkinter as tk
 
 from .. import context
@@ -22,11 +20,10 @@ PANEL_ACTIVE = '#7c645c'
 DANGER = '#bb4b4b'          # reset buttons
 DANGER_ACTIVE = '#713131'
 
-_IS_MAC = sys.platform == 'darwin'
 
-
-class _AquaButton(tk.Label):
-    """A button emulated with a Label so macOS Aqua honors the custom styling."""
+class _StyledButton(tk.Label):
+    """A button drawn from a Label so the custom styling renders the same on
+    Windows, macOS and Linux."""
 
     def __init__(self, parent, *, text, command, bg, active_bg, fg, active_fg,
                  font, width, border, height=None, state=None, highlight_bg=None,
@@ -74,33 +71,13 @@ def styled_button(parent, text, command, *, bg, active_bg, fg='WHITE', active_fg
                   highlight_bg=None, **extra):
     """Create a button with the project's recurring styling.
 
-    Uses a native ``tk.Button`` on Windows/Linux and the Aqua-friendly
-    :class:`_AquaButton` on macOS. ``width`` may be ``None`` to auto-size.
+    Rendered identically on every platform via :class:`_StyledButton`.
+    ``width`` may be ``None`` to auto-size to the text.
     """
     font = (context.FONT, font_size, 'bold')
-    if _IS_MAC:
-        return _AquaButton(parent, text=text, command=command, bg=bg, active_bg=active_bg,
-                           fg=fg, active_fg=active_fg, font=font, width=width, border=border,
-                           height=height, state=state, highlight_bg=highlight_bg, **extra)
-
-    kwargs = dict(
-        background=bg, foreground=fg,
-        activebackground=active_bg, activeforeground=active_fg,
-        highlightthickness=2,
-        highlightbackground=bg if highlight_bg is None else highlight_bg,
-        highlightcolor='WHITE',
-        border=border,
-        font=font,
-        text=text, command=command,
-    )
-    if width is not None:
-        kwargs['width'] = width
-    if height is not None:
-        kwargs['height'] = height
-    if state is not None:
-        kwargs['state'] = state
-    kwargs.update(extra)
-    return tk.Button(parent, **kwargs)
+    return _StyledButton(parent, text=text, command=command, bg=bg, active_bg=active_bg,
+                         fg=fg, active_fg=active_fg, font=font, width=width, border=border,
+                         height=height, state=state, highlight_bg=highlight_bg, **extra)
 
 
 def make_return_button(command=None):
