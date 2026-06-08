@@ -1,0 +1,12 @@
+# Sisyphe.io Python dependencies
+#
+# Install with:  python3 -m pip install -r requirements.txt
+#
+# Tkinter (the GUI) ships with CPython, so it is not listed here.
+# pygame has no wheel for Python 3.14 yet and fails to build from source there,
+# so on 3.14+ we use pygame-ce, the maintained community fork that imports as
+# `pygame` with the same API. On older Pythons, regular pygame is used.
+
+pillow
+pygame; python_version < "3.14"
+pygame-ce; python_version >= "3.14"
