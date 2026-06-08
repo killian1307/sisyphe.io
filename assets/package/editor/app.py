@@ -15,7 +15,6 @@ from . import tools
 from . import placement
 from . import render
 from . import menu
-from . import files
 
 # Logical name -> file in <assets>/sfx (the editor uses a subset of the sounds).
 EDITOR_SOUNDS = {
@@ -52,7 +51,6 @@ def main(base_path):
     platform_utils.set_window_icon(
         window,
         os.path.join(base_path, 'img', 'icons', 'editor_tskbr.ico'),
-        os.path.join(base_path, 'img', 'menus', 'sisyphe.png'),
     )
     window.resizable(False, False)
 

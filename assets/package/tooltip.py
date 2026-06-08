@@ -13,8 +13,10 @@ class ToolTip(object):
         self.create_tooltip_events()
 
     def create_tooltip_events(self):
-        self.widget.bind('<Enter>', self.show_tip)
-        self.widget.bind('<Leave>', self.hide_tip)
+        # add='+' so a widget that also binds <Enter>/<Leave> (e.g. the macOS
+        # custom button's hover effect) keeps working alongside the tooltip.
+        self.widget.bind('<Enter>', self.show_tip, add='+')
+        self.widget.bind('<Leave>', self.hide_tip, add='+')
 
     def show_tip(self, event=None):
         "Display text in tooltip window"

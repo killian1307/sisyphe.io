@@ -38,6 +38,8 @@ Click [here](https://youtu.be/KAzV44CmPmg) to watch the presentation and demonst
 
 > 🧩 **About pygame:** upstream `pygame` has wheels up to Python 3.13. On **Python 3.14** there is no upstream wheel yet, so `requirements.txt` automatically installs **`pygame-ce`** instead — the actively-maintained community fork that imports as `pygame` with the same API. If you want the upstream `pygame`, use Python ≤ 3.13.
 
+> 🔤 **Fonts:** the UI font ships with the game — any `.ttf`/`.otf` in [assets/fonts/](assets/fonts/) (currently **Tiny5**) is registered at startup and used on every platform, with no system install. Replace that file to change the font everywhere. See [assets/package/fonts.py](assets/package/fonts.py).
+
 ## Installation
 
 The project runs the same way on **Windows, macOS and Linux**. The recommended setup uses a virtual environment.

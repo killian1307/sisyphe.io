@@ -10,9 +10,12 @@ from . import widgets
 
 
 def _author_button(text, x, y, role):
-    """A non-clickable label-style button naming a contributor, with a role tooltip."""
-    btn = tk.Button(context.window, text=text, disabledforeground='WHITE', state="disabled",
-                    font=('Small Fonts', 15, 'bold'), height=1, borderwidth=0, background="black")
+    """A non-clickable label naming a contributor, with a role tooltip.
+
+    A Label (not a disabled Button) so it renders identically on macOS Aqua.
+    """
+    btn = tk.Label(context.window, text=text, fg='WHITE', background="black",
+                   font=(context.FONT, 15, 'bold'), height=1)
     btn.place(x=x, y=y)
     context.monde_buttons.append(btn)
     tooltip.ToolTip(btn, role)
@@ -38,7 +41,7 @@ def credits_menu():
     context.monde_buttons.append(return_button)
 
     website_button = widgets.styled_button(
-        context.window, "sisyphe.acciaw.me", open_website,
+        context.window, "sisyphe.letterk.me", open_website,
         bg=widgets.PANEL, active_bg=widgets.PANEL_ACTIVE,
         width=18, height=1, border=5, font_size=15,
     )
@@ -55,4 +58,4 @@ def credits_menu():
 def open_website():
     """Open the project website in the default browser."""
     context.sounds.play_sound('button')
-    platform_utils.open_url("https://sisyphe.acciaw.me/")
+    platform_utils.open_url("https://sisyphe.letterk.me/")

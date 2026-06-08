@@ -12,7 +12,7 @@ def start():
     """Hide the cursor and kick off the welcome-text fade sequence."""
     context.canvas.configure(cursor='none')
     label = tk.Label(context.window, text=context.lang.welcome, fg="black", bg="black",
-                     font=('Small Fonts', 30, 'bold'), cursor='none')
+                     font=(context.FONT, 30, 'bold'), cursor='none')
     label.place(relx=0.5, rely=0.5, anchor="center")
     context.window.after(500, fade_in_text, label)
 

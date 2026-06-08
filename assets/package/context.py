@@ -23,6 +23,7 @@ fichier_exe = False  # set True to compile to .exe (see exe.txt)
 assets_dir = ''      # asset root ('' in dev, sys._MEIPASS when frozen)
 settings_dir = None  # per-user data dir
 cursor_spec = ''     # Tk cursor string (custom .cur on Windows, default elsewhere)
+FONT = 'Small Fonts'  # UI font family, resolved per-platform at startup (see fonts.py)
 
 # --- Managers / singletons ---
 images = None        # GameImages       (was game_images)

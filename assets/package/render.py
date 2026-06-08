@@ -149,8 +149,8 @@ def affiche_plateau_canvas():
     if jeu.custom > 0:
         pass
     else:
-        Canevas.create_text(402, 24, fill='black', font=("Small Fonts", "20"), text=lang.level + f"{jeu.numero_monde} - {jeu.niveau}", anchor='center')  # Affiche le niveau
-        Canevas.create_text(400, 22, fill='white', font=("Small Fonts", "20"), text=lang.level + f"{jeu.numero_monde} - {jeu.niveau}", anchor='center')
+        Canevas.create_text(402, 24, fill='black', font=(context.FONT, "20"), text=lang.level + f"{jeu.numero_monde} - {jeu.niveau}", anchor='center')  # Affiche le niveau
+        Canevas.create_text(400, 22, fill='white', font=(context.FONT, "20"), text=lang.level + f"{jeu.numero_monde} - {jeu.niveau}", anchor='center')
 
     # affichage icone marteau
     if jeu.marteau_present == True:
@@ -176,8 +176,8 @@ def affiche_plateau_canvas():
         total_hammers_display = full_hammers + 1 if remaining_uses > 0 else full_hammers  # + le marteau actuel s'il lui reste de la durabilité
 
         # Affiche le texte
-        Canevas.create_text(92, 590, fill='black', font=("Small Fonts", "15"), text=total_hammers_display, anchor='center')
-        Canevas.create_text(90, 588, fill='white', font=("Small Fonts", "15"), text=total_hammers_display, anchor='center')
+        Canevas.create_text(92, 590, fill='black', font=(context.FONT, "15"), text=total_hammers_display, anchor='center')
+        Canevas.create_text(90, 588, fill='white', font=(context.FONT, "15"), text=total_hammers_display, anchor='center')
 
     # affichage icone corde
     if jeu.corde_present == True:
@@ -203,26 +203,26 @@ def affiche_plateau_canvas():
         total_ropes_display = full_ropes + 1 if remaining_uses_2 > 0 else full_ropes  # + la corde actuelle s'il lui reste de la durabilité
 
         # Affiche le texte
-        Canevas.create_text(42, 590, fill='black', font=("Small Fonts", "15"), text=total_ropes_display, anchor='center')
-        Canevas.create_text(40, 588, fill='white', font=("Small Fonts", "15"), text=total_ropes_display, anchor='center')
+        Canevas.create_text(42, 590, fill='black', font=(context.FONT, "15"), text=total_ropes_display, anchor='center')
+        Canevas.create_text(40, 588, fill='white', font=(context.FONT, "15"), text=total_ropes_display, anchor='center')
 
     # Afficher le compteur de déplacements
-    Canevas.create_text(792, 24, fill='black', font=("Small Fonts", "20"), text=lang.moves + str(jeu.deplacements), anchor='e')
-    Canevas.create_text(790, 22, fill='white', font=("Small Fonts", "20"), text=lang.moves + str(jeu.deplacements), anchor='e')  # Affiche le nombre de déplacements
+    Canevas.create_text(792, 24, fill='black', font=(context.FONT, "20"), text=lang.moves + str(jeu.deplacements), anchor='e')
+    Canevas.create_text(790, 22, fill='white', font=(context.FONT, "20"), text=lang.moves + str(jeu.deplacements), anchor='e')  # Affiche le nombre de déplacements
     if jeu.niveau == 'FIN':
-        Canevas.create_text(402, 277, fill="black", font=("Small Fonts", "30", "bold"), text=lang.congrats_1, anchor='center')
-        Canevas.create_text(400, 275, fill="white", font=("Small Fonts", "30", "bold"), text=lang.congrats_1, anchor='center')
-        Canevas.create_text(402, 327, fill="black", font=("Small Fonts", "30", "bold"), text=lang.congrats_2 + str(jeu.numero_monde) + lang.congrats_3, anchor='center')
-        Canevas.create_text(400, 325, fill="white", font=("Small Fonts", "30", "bold"), text=lang.congrats_2 + str(jeu.numero_monde) + lang.congrats_3, anchor='center')
+        Canevas.create_text(402, 277, fill="black", font=(context.FONT, "30", "bold"), text=lang.congrats_1, anchor='center')
+        Canevas.create_text(400, 275, fill="white", font=(context.FONT, "30", "bold"), text=lang.congrats_1, anchor='center')
+        Canevas.create_text(402, 327, fill="black", font=(context.FONT, "30", "bold"), text=lang.congrats_2 + str(jeu.numero_monde) + lang.congrats_3, anchor='center')
+        Canevas.create_text(400, 325, fill="white", font=(context.FONT, "30", "bold"), text=lang.congrats_2 + str(jeu.numero_monde) + lang.congrats_3, anchor='center')
     # Afficher le temps écoulé
     temps_ecoule = round(time.time() - jeu.temps_debut_niveau)
     minutes = temps_ecoule // 60
     secondes = temps_ecoule % 60  # Pour convertir en Minutes les secondes
-    Canevas.create_text(12, 24, fill='black', font=("Small Fonts", "20"), text=lang.time + f'{minutes}min {secondes}s', anchor='w')
-    Canevas.create_text(10, 22, fill='white', font=("Small Fonts", "20"), text=lang.time + f'{minutes}min {secondes}s', anchor='w')  # Affiche le temps écoulé à chaque déplacement
+    Canevas.create_text(12, 24, fill='black', font=(context.FONT, "20"), text=lang.time + f'{minutes}min {secondes}s', anchor='w')
+    Canevas.create_text(10, 22, fill='white', font=(context.FONT, "20"), text=lang.time + f'{minutes}min {secondes}s', anchor='w')  # Affiche le temps écoulé à chaque déplacement
     if parametres["fps"]["show"]:
-        Canevas.create_text(794, 584, fill='black', font=("Small Fonts", "15"), text=lang.fps + str(jeu.fps_print), anchor='e')
-        Canevas.create_text(792, 582, fill='white', font=("Small Fonts", "15"), text=lang.fps + str(jeu.fps_print), anchor='e')  # Affiche le niveau
+        Canevas.create_text(794, 584, fill='black', font=(context.FONT, "15"), text=lang.fps + str(jeu.fps_print), anchor='e')
+        Canevas.create_text(792, 582, fill='white', font=(context.FONT, "15"), text=lang.fps + str(jeu.fps_print), anchor='e')  # Affiche le niveau
 
     # Afficher les icones d'indice/de tuto
     if context.tutorial_bool == True:

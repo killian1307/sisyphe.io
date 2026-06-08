@@ -44,8 +44,8 @@ def affichage_ecran_transition():
         level = lang.end
     else:
         level = jeu.niveau + 1
-    context.canvas.create_text(context.WIDTH / 2, context.HEIGHT / 2 - 30, text=lang.score + str(score_1), fill="white", font=("Small Fonts", "30", "bold"))
-    context.canvas.create_text(context.WIDTH / 2, context.HEIGHT / 2 + 30, text=lang.next_level + f"{jeu.numero_monde} - {level}", fill="white", font=("Small Fonts", "30", "bold"))
+    context.canvas.create_text(context.WIDTH / 2, context.HEIGHT / 2 - 30, text=lang.score + str(score_1), fill="white", font=(context.FONT, "30", "bold"))
+    context.canvas.create_text(context.WIDTH / 2, context.HEIGHT / 2 + 30, text=lang.next_level + f"{jeu.numero_monde} - {level}", fill="white", font=(context.FONT, "30", "bold"))
     context.canvas.after(2000, mise_en_place_nouveau_niveau)
 
 

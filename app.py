@@ -15,6 +15,7 @@ from assets.package import context
 from assets.package import paths
 from assets.package import settings
 from assets.package import platform_utils
+from assets.package import fonts
 from assets.package import images
 from assets.package import game_state
 from assets.package import db
@@ -40,7 +41,6 @@ def build_window():
     platform_utils.set_window_icon(
         window,
         os.path.join(context.assets_dir, 'assets', 'img', 'icons', 'game_tskbr.ico'),
-        os.path.join(context.assets_dir, 'assets', 'img', 'menus', 'sisyphe.png'),
     )
     window.resizable(False, False)
     window['cursor'] = context.cursor_spec
@@ -92,9 +92,15 @@ def main():
     context.settings_dir = settings.ensure_user_copy(context.assets_dir)
     context.cursor_spec = platform_utils.cursor_spec(context.assets_dir)
 
+    # --- fonts: register bundled fonts BEFORE the Tk root so Tk can see them ---
+    bundled_fonts = fonts.register(context.assets_dir)
+
     # --- window + canvas ---
     context.window = build_window()
     context.canvas = build_canvas()
+
+    # resolve the family now that the Tk root exists (bundled fonts win)
+    context.FONT = fonts.resolve(bundled_fonts)
 
     # --- managers / singletons ---
     context.images = images.GameImages(context.assets_dir)

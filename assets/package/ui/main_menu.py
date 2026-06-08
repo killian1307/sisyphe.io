@@ -193,7 +193,7 @@ def create_main_menu():
     # Variable pour le texte qui défile
     histoire_sisyphe = context.lang.story + "  —  "
 
-    context.story = tk.Label(context.window, text=histoire_sisyphe, fg="white", bg='black', font=('Small Fonts', 15, 'bold'))
+    context.story = tk.Label(context.window, text=histoire_sisyphe, fg="white", bg='black', font=(context.FONT, 15, 'bold'))
 
     y = window_height / 2 + button_height * 3 + 30
     context.story.place(x=400, y=y, anchor="center")

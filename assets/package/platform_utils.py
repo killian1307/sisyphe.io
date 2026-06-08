@@ -14,18 +14,19 @@ def open_url(url):
     webbrowser.open(url)
 
 
-def set_window_icon(window, ico_path, png_path):
-    """Set the window/taskbar icon.
+def set_window_icon(window, ico_path):
+    """Set the window / taskbar / dock icon from a ``.ico`` file.
 
-    Windows uses the original ``.ico`` via ``iconbitmap``; elsewhere we fall back
-    to a PNG via ``iconphoto`` (``.ico`` + ``iconbitmap`` is Windows-only in Tk).
+    Windows uses ``iconbitmap`` directly; elsewhere ``iconbitmap`` doesn't accept
+    ``.ico``, so we load it with Pillow and apply it via ``iconphoto`` (which also
+    drives the macOS dock icon).
     """
     try:
         if sys.platform == 'win32':
             window.iconbitmap(ico_path)
         else:
             from PIL import Image, ImageTk
-            icon = ImageTk.PhotoImage(Image.open(png_path))
+            icon = ImageTk.PhotoImage(Image.open(ico_path))
             window._icon_ref = icon  # keep a reference so Tk doesn't garbage-collect it
             window.iconphoto(True, icon)
     except Exception:

@@ -5,6 +5,7 @@ from tkinter import ttk
 
 from .. import context
 from .. import settings
+from . import widgets
 
 
 def show_dialog_bottom_screen(world_number):
@@ -45,7 +46,7 @@ def show_dialog_bottom_screen(world_number):
         dialog_text = tuto_monde[world_number]
         bg_color = '#998070'
         fg_color = 'WHITE'
-        font_style = ('Small Fonts', 15)
+        font_style = (context.FONT, 15)
 
         # Bordure de la boîte
         border_frame = tk.Frame(context.window, background='#433632')
@@ -75,7 +76,9 @@ def show_dialog_bottom_screen(world_number):
         scrollbar.pack(side='right', fill='y')
 
         # Bouton fermer
-        close_button = tk.Button(dialog_frame, text=lang.popup_close_button, font=font_style, bg='#bea48e', border=2, fg=fg_color, activebackground='#7c645c', activeforeground='white', command=close_tutorial)
+        close_button = widgets.styled_button(dialog_frame, lang.popup_close_button, close_tutorial,
+                                             bg='#bea48e', active_bg='#7c645c', fg=fg_color, active_fg='white',
+                                             width=None, border=2, font_size=15)
 
         # Met le bouton et le texte dans la boîte de dialogue
         text_widget.pack(side='top', fill='x', expand=True)

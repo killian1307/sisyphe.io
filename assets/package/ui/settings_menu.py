@@ -26,7 +26,7 @@ def show_listening_popup(action):
     popup.resizable(False, False)
     # Met à jour le label de la popup
     tk.Label(popup, text="Veuillez appuyer sur une touche...", bg='#9b6b53', fg='white',
-             font=("Small Fonts", "20")).pack(pady=20)
+             font=(context.FONT, "20")).pack(pady=20)
     # Commence à écouter les touches du clavier
     popup.bind('<Key>', lambda event: save_key_press(event, action))
     # La popup prend le focus
@@ -114,47 +114,47 @@ def create_settings_menu():
     Canevas.create_image(400, 300, image=game_images.settings_menu_texture, anchor="center")
     Canevas.create_image(400, 60, anchor="center", image=game_images.logo_texture)
     # Titre, sous-titre et textes à gauche des boutons
-    Canevas.create_text(192, 182, fill='black', font=("Small Fonts", "20"), text=lang.up, anchor='e')
-    Canevas.create_text(190, 180, fill='white', font=("Small Fonts", "20"), text=lang.up, anchor='e')
+    Canevas.create_text(192, 182, fill='black', font=(context.FONT, "20"), text=lang.up, anchor='e')
+    Canevas.create_text(190, 180, fill='white', font=(context.FONT, "20"), text=lang.up, anchor='e')
 
-    Canevas.create_text(532, 282, fill='black', font=("Small Fonts", "20"), text=lang.music, anchor='e')
-    Canevas.create_text(530, 280, fill='white', font=("Small Fonts", "20"), text=lang.music, anchor='e')
+    Canevas.create_text(532, 282, fill='black', font=(context.FONT, "20"), text=lang.music, anchor='e')
+    Canevas.create_text(530, 280, fill='white', font=(context.FONT, "20"), text=lang.music, anchor='e')
 
-    Canevas.create_text(642, 282, fill='black', font=("Small Fonts", "20"), text=f"{parametres['volume']['musique']*5} %", anchor='center')
-    Canevas.create_text(640, 280, fill='white', font=("Small Fonts", "20"), text=f"{parametres['volume']['musique']*5} %", anchor='center')
+    Canevas.create_text(642, 282, fill='black', font=(context.FONT, "20"), text=f"{parametres['volume']['musique']*5} %", anchor='center')
+    Canevas.create_text(640, 280, fill='white', font=(context.FONT, "20"), text=f"{parametres['volume']['musique']*5} %", anchor='center')
 
-    Canevas.create_text(532, 182, fill='black', font=("Small Fonts", "20"), text=lang.fps, anchor='e')
-    Canevas.create_text(530, 180, fill='white', font=("Small Fonts", "20"), text=lang.fps, anchor='e')
+    Canevas.create_text(532, 182, fill='black', font=(context.FONT, "20"), text=lang.fps, anchor='e')
+    Canevas.create_text(530, 180, fill='white', font=(context.FONT, "20"), text=lang.fps, anchor='e')
 
-    Canevas.create_text(192, 232, fill='black', font=("Small Fonts", "20"), text=lang.left, anchor='e')
-    Canevas.create_text(190, 230, fill='white', font=("Small Fonts", "20"), text=lang.left, anchor='e')
+    Canevas.create_text(192, 232, fill='black', font=(context.FONT, "20"), text=lang.left, anchor='e')
+    Canevas.create_text(190, 230, fill='white', font=(context.FONT, "20"), text=lang.left, anchor='e')
 
-    Canevas.create_text(192, 282, fill='black', font=("Small Fonts", "20"), text=lang.down, anchor='e')
-    Canevas.create_text(190, 280, fill='white', font=("Small Fonts", "20"), text=lang.down, anchor='e')
+    Canevas.create_text(192, 282, fill='black', font=(context.FONT, "20"), text=lang.down, anchor='e')
+    Canevas.create_text(190, 280, fill='white', font=(context.FONT, "20"), text=lang.down, anchor='e')
 
-    Canevas.create_text(532, 332, fill='black', font=("Small Fonts", "20"), text=lang.sounds, anchor='e')
-    Canevas.create_text(530, 330, fill='white', font=("Small Fonts", "20"), text=lang.sounds, anchor='e')
+    Canevas.create_text(532, 332, fill='black', font=(context.FONT, "20"), text=lang.sounds, anchor='e')
+    Canevas.create_text(530, 330, fill='white', font=(context.FONT, "20"), text=lang.sounds, anchor='e')
 
-    Canevas.create_text(642, 332, fill='black', font=("Small Fonts", "20"), text=f"{parametres['volume']['sons']*5} %", anchor='center')
-    Canevas.create_text(640, 330, fill='white', font=("Small Fonts", "20"), text=f"{parametres['volume']['sons']*5} %", anchor='center')
+    Canevas.create_text(642, 332, fill='black', font=(context.FONT, "20"), text=f"{parametres['volume']['sons']*5} %", anchor='center')
+    Canevas.create_text(640, 330, fill='white', font=(context.FONT, "20"), text=f"{parametres['volume']['sons']*5} %", anchor='center')
 
-    Canevas.create_text(192, 332, fill='black', font=("Small Fonts", "20"), text=lang.right, anchor='e')
-    Canevas.create_text(190, 330, fill='white', font=("Small Fonts", "20"), text=lang.right, anchor='e')
+    Canevas.create_text(192, 332, fill='black', font=(context.FONT, "20"), text=lang.right, anchor='e')
+    Canevas.create_text(190, 330, fill='white', font=(context.FONT, "20"), text=lang.right, anchor='e')
 
-    Canevas.create_text(532, 232, fill='black', font=("Small Fonts", "20"), text=lang.language, anchor='e')
-    Canevas.create_text(530, 230, fill='white', font=("Small Fonts", "20"), text=lang.language, anchor='e')
+    Canevas.create_text(532, 232, fill='black', font=(context.FONT, "20"), text=lang.language, anchor='e')
+    Canevas.create_text(530, 230, fill='white', font=(context.FONT, "20"), text=lang.language, anchor='e')
 
-    Canevas.create_text(192, 382, fill='black', font=("Small Fonts", "20"), text=lang.interact, anchor='e')
-    Canevas.create_text(190, 380, fill='white', font=("Small Fonts", "20"), text=lang.interact, anchor='e')
+    Canevas.create_text(192, 382, fill='black', font=(context.FONT, "20"), text=lang.interact, anchor='e')
+    Canevas.create_text(190, 380, fill='white', font=(context.FONT, "20"), text=lang.interact, anchor='e')
 
-    Canevas.create_text(192, 432, fill='black', font=("Small Fonts", "20"), text=lang.restart, anchor='e')
-    Canevas.create_text(190, 430, fill='white', font=("Small Fonts", "20"), text=lang.restart, anchor='e')
+    Canevas.create_text(192, 432, fill='black', font=(context.FONT, "20"), text=lang.restart, anchor='e')
+    Canevas.create_text(190, 430, fill='white', font=(context.FONT, "20"), text=lang.restart, anchor='e')
 
-    Canevas.create_text(192, 482, fill='black', font=("Small Fonts", "20"), text=lang.menu, anchor='e')
-    Canevas.create_text(190, 480, fill='white', font=("Small Fonts", "20"), text=lang.menu, anchor='e')
+    Canevas.create_text(192, 482, fill='black', font=(context.FONT, "20"), text=lang.menu, anchor='e')
+    Canevas.create_text(190, 480, fill='white', font=(context.FONT, "20"), text=lang.menu, anchor='e')
 
-    Canevas.create_text(402, 122, fill='black', font=("Small Fonts", "25"), text=lang.settings, anchor='center')
-    Canevas.create_text(400, 120, fill='white', font=("Small Fonts", "25"), text=lang.settings, anchor='center')
+    Canevas.create_text(402, 122, fill='black', font=(context.FONT, "25"), text=lang.settings, anchor='center')
+    Canevas.create_text(400, 120, fill='white', font=(context.FONT, "25"), text=lang.settings, anchor='center')
 
     # Boutons pour afficher et changer les contrôles
     create_direction_button(f'{parametres["controles"]["up"].upper()}', 230, 160, 'up')

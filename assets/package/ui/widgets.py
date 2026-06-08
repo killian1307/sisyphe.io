@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 """Shared UI helpers: the styled-button factory, the return-to-menu handler and
-the widget-cleanup routines used when switching screens."""
+the widget-cleanup routines used when switching screens.
+
+On macOS the native Aqua ``tk.Button`` ignores ``bg``/``relief``/``borderwidth``
+(it always draws a native button, which is why custom-colored buttons looked
+broken there). So on macOS we render the button from a ``tk.Label`` — which Aqua
+*does* honor — with hover/press bindings to reproduce the Windows look. On
+Windows and Linux the classic ``tk.Button`` is used unchanged.
+"""
+import sys
 import tkinter as tk
 
 from .. import context
@@ -14,25 +22,79 @@ PANEL_ACTIVE = '#7c645c'
 DANGER = '#bb4b4b'          # reset buttons
 DANGER_ACTIVE = '#713131'
 
+_IS_MAC = sys.platform == 'darwin'
+
+
+class _AquaButton(tk.Label):
+    """A button emulated with a Label so macOS Aqua honors the custom styling."""
+
+    def __init__(self, parent, *, text, command, bg, active_bg, fg, active_fg,
+                 font, width, border, height=None, state=None, highlight_bg=None,
+                 disabledforeground=None, anchor='center', **_ignore):
+        opts = dict(
+            text=text, background=bg, foreground=fg, font=font,
+            borderwidth=border, relief='raised',
+            highlightthickness=2, highlightbackground=highlight_bg or bg,
+            highlightcolor='WHITE', anchor=anchor,
+        )
+        if width is not None:
+            opts['width'] = width
+        if height is not None:
+            opts['height'] = height
+        super().__init__(parent, **opts)
+        self._bg, self._active_bg = bg, active_bg
+        self._fg, self._active_fg = fg, active_fg
+        self._command = command
+        if state == 'disabled':
+            self.configure(foreground=disabledforeground or fg, relief='groove')
+        else:
+            self.bind('<Enter>', self._on_enter, add='+')
+            self.bind('<Leave>', self._on_leave, add='+')
+            self.bind('<ButtonPress-1>', self._on_press, add='+')
+            self.bind('<ButtonRelease-1>', self._on_release, add='+')
+
+    def _on_enter(self, _event):
+        self.configure(background=self._active_bg, foreground=self._active_fg)
+
+    def _on_leave(self, _event):
+        self.configure(background=self._bg, foreground=self._fg, relief='raised')
+
+    def _on_press(self, _event):
+        self.configure(relief='sunken', background=self._active_bg, foreground=self._active_fg)
+
+    def _on_release(self, event):
+        self.configure(relief='raised', background=self._bg, foreground=self._fg)
+        inside = 0 <= event.x < self.winfo_width() and 0 <= event.y < self.winfo_height()
+        if self._command is not None and inside:
+            self._command()
+
 
 def styled_button(parent, text, command, *, bg, active_bg, fg='WHITE', active_fg='WHITE',
                   width=10, border=5, font_size=20, height=None, state=None,
                   highlight_bg=None, **extra):
-    """Create a tk.Button with the project's recurring styling.
+    """Create a button with the project's recurring styling.
 
-    Only ``height``/``state`` are added when given, so callers reproduce the
-    exact original widgets (some buttons omit ``height``).
+    Uses a native ``tk.Button`` on Windows/Linux and the Aqua-friendly
+    :class:`_AquaButton` on macOS. ``width`` may be ``None`` to auto-size.
     """
+    font = (context.FONT, font_size, 'bold')
+    if _IS_MAC:
+        return _AquaButton(parent, text=text, command=command, bg=bg, active_bg=active_bg,
+                           fg=fg, active_fg=active_fg, font=font, width=width, border=border,
+                           height=height, state=state, highlight_bg=highlight_bg, **extra)
+
     kwargs = dict(
         background=bg, foreground=fg,
         activebackground=active_bg, activeforeground=active_fg,
         highlightthickness=2,
         highlightbackground=bg if highlight_bg is None else highlight_bg,
         highlightcolor='WHITE',
-        width=width, border=border,
-        font=('Small Fonts', font_size, 'bold'),
+        border=border,
+        font=font,
         text=text, command=command,
     )
+    if width is not None:
+        kwargs['width'] = width
     if height is not None:
         kwargs['height'] = height
     if state is not None:
