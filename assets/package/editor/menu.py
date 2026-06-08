@@ -73,7 +73,6 @@ def build():
     # Création de la barre au dessus de l'éditeur
     menu_bar = tk.Menu(window)
     window.config(menu=menu_bar)
-    window.protocol("WM_DELETE_WINDOW", files.confirm_close)
 
     # Création des cases de cette barre
     file_menu = tk.Menu(menu_bar, tearoff=0)
@@ -128,3 +127,26 @@ def build():
     # Ajout du mode suppression
     edition_menu.add_separator()
     edition_menu.add_checkbutton(label=lang.delete_mode, variable=ectx.delete_selected, command=tools.select_delete, accelerator=lang.return_key)
+
+
+_TOOL_KEYS = ('w', 'W', 'x', 'X', 'c', 'C', 'b', 'B', 'q', 'Q', 's', 'S', 'd', 'D',
+              'f', 'F', 'g', 'G', 'h', 'H', 'j', 'J', 'v', 'V', '<BackSpace>')
+_CMD_KEYS = ('n', 'o', 's', 't', 'u', 'i', 'N', 'O', 'S', 'T', 'U', 'I')
+
+
+def unbind_keys():
+    """Remove every editor key binding (used when leaving the embedded editor)."""
+    window = ectx.window
+    for seq in _TOOL_KEYS:
+        window.unbind(seq)
+    for key in _CMD_KEYS:
+        window.unbind_all(f'<{_MOD}-{key}>')
+    window.unbind_all(f'<{_MOD}-Shift-s>')
+    window.unbind_all(f'<{_MOD}-Shift-S>')
+
+
+def teardown():
+    """Remove the editor menu bar and key/canvas bindings (embedded mode)."""
+    unbind_keys()
+    ectx.canvas.unbind('<Button-1>')
+    ectx.window.config(menu='')

@@ -101,7 +101,9 @@ All keys are rebindable in the **Settings** menu, along with language (12 availa
 
 ## Level editor
 
-The editor lets you build and save your own levels as `.json` files, then load them via the menu's **Open** button. Select a block (keyboard shortcuts or the **Edit** menu), click the grid to place it, and use **File → Save**. A level must contain a player, at least as many rocks as holes, and matching portal/door pairs to be saved.
+The **Editor** button on the home screen opens the editor **in the same window** (a small **Back** button, top-left, returns to the menu). It lets you build and save your own levels as `.json` files, then load them via the menu's **Open** button. Select a block (keyboard shortcuts or the **Edit** menu), click the grid to place it, and use **File → Save**. A level must contain a player, at least as many rocks as holes, and matching portal/door pairs to be saved.
+
+The editor can also be launched on its own with `python assets/editor.py` (a standalone window) — handy for debugging.
 
 ## Save data location
 
@@ -146,11 +148,11 @@ sisyphe.io/
 │     ├─ audio/               # music.py + sounds.py
 │     ├─ lang/                # one module per language + catalog.py
 │     └─ ui/                  # main_menu, world_select, settings_menu, credits, dialogs, intro, widgets
-│     └─ editor/              # the level editor (context, tools, placement, render, files, menu, app)
+│     └─ editor/              # the level editor (context, tools, placement, render, files, menu, embed, app)
 └─ test_levels/               # sample custom levels
 ```
 
-**Design notes for contributors:** shared mutable state lives in `context.py` (per program), so screens read/write `context.X`. To keep imports cycle-free, modules import each other as modules (`from . import x` then `x.func()`), never `from .x import func`. The same package is imported as `assets.package.*` by the game and as `package.*` by the editor subprocess, so all intra-package imports are relative.
+**Design notes for contributors:** shared mutable state lives in `context.py` (one for the game, one for the editor), so screens read/write `context.X`. The editor normally runs **embedded** in the game window (`editor/embed.py` points the editor context at the game's window/canvas); it can also run standalone via `assets/editor.py`. To keep imports cycle-free, modules import each other as modules (`from . import x` then `x.func()`), never `from .x import func`. The same package is imported as `assets.package.*` by the game and as `package.*` by the standalone editor, so all intra-package imports are relative.
 
 ## Building a standalone executable
 
@@ -158,7 +160,7 @@ The game can be bundled with [PyInstaller](https://pyinstaller.org/) (`pip insta
 
 ## Dependencies
 
-Standard library: `tkinter` (+ `ttk`), `time`, `json`, `subprocess`, `threading`, `sys`, `os`, `shutil`, `sqlite3`, `datetime`, `platform`, `webbrowser`.
+Standard library: `tkinter` (+ `ttk`), `time`, `json`, `sys`, `os`, `shutil`, `sqlite3`, `datetime`, `platform`, `webbrowser`, `ctypes` (font registration).
 
 Third-party (`requirements.txt`):
 - **Pillow** — loading and scaling game textures.

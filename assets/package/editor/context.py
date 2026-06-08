@@ -15,6 +15,10 @@ sounds = None        # SoundManager
 lang = None          # Traduction
 tex = {}             # name -> PhotoImage (real block textures)
 
+# What to do when the editor is left (set by the launcher):
+#   standalone -> destroy the window ; embedded -> return to the game's main menu.
+on_exit = None
+
 # --- document state ---
 plateau = None       # the level grid (reassigned by new_level/open_level)
 show_textures = False  # was the ``textures`` flag (show real textures vs shapes)

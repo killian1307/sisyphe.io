@@ -15,6 +15,7 @@ from . import tools
 from . import placement
 from . import render
 from . import menu
+from . import files
 
 # Logical name -> file in <assets>/sfx (the editor uses a subset of the sounds).
 EDITOR_SOUNDS = {
@@ -68,6 +69,10 @@ def main(base_path):
     ectx.canvas = canvas
     ectx.frame_elements = tk.Frame(window)
     ectx.frame_elements.grid(row=0, column=1)
+
+    # Standalone: leaving the editor closes its window.
+    ectx.on_exit = lambda: (music.stop_music(), window.destroy())
+    window.protocol("WM_DELETE_WINDOW", files.confirm_close)
 
     # --- tools, menu, bindings ---
     tools.init()

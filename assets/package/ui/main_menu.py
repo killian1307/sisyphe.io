@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 """The main menu, the scrolling story text, the editor-launch logic and quit."""
 import os
-import subprocess
-import sys
-import threading
 import tkinter as tk
 from tkinter import messagebox
 
@@ -16,33 +13,7 @@ from . import credits
 from . import dialogs
 from .. import level_flow
 from ..audio import music
-
-
-# --- editor subprocess (kept tracked via threading, as in the original) ---
-def monitor_subprocess(process):
-    """Watch the editor process; when it closes, restore menu music + story."""
-    process.wait()  # Attend la fin du sous-processus
-    context.game.process_launched = False
-    try:
-        histoire_sisyphe = context.lang.story + "  —  "
-        cycle(context.story, histoire_sisyphe)
-        context.window.after(200, lambda: music.play_music(os.path.join(context.assets_dir, 'assets', 'mus', 'menu_main.ogg')))
-    except Exception:
-        print("Le jeu est fermé")
-
-
-def open_external_app():
-    """Launch the level editor as a separate process."""
-    context.sounds.play_sound('button')
-    if context.game.process_launched == False:
-        if context.fichier_exe == True:
-            proc = subprocess.Popen([os.path.join(context.assets_dir, 'assets', 'editor.exe')])
-        else:
-            proc = subprocess.Popen([sys.executable, os.path.join(context.assets_dir, 'assets', 'editor.py')])
-        context.game.process_launched = True
-        monitor_thread = threading.Thread(target=monitor_subprocess, args=(proc,))
-        monitor_thread.start()
-        music.stop_music()
+from ..editor import embed
 
 
 def show_popup():
@@ -121,9 +92,9 @@ def create_main_menu():
             bg=color2, active_bg=color3, fg=color4, active_fg=color4,
             width=10, height=1, border=5, font_size=20,
         )
-        # Bouton Editeur de niveaux
+        # Bouton Editeur de niveaux (ouvre l'éditeur dans la fenêtre courante)
         context.edit_button = widgets.styled_button(
-            context.window, context.lang.editor_button, open_external_app,
+            context.window, context.lang.editor_button, embed.open_editor,
             bg=color2, active_bg=color3, fg=color4, active_fg=color4,
             width=10, height=1, border=5, font_size=20,
         )

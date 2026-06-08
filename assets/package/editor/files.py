@@ -5,7 +5,6 @@ from tkinter import filedialog, messagebox
 
 from . import context as ectx
 from . import render
-from ..audio import music
 
 
 def new_level():
@@ -100,15 +99,17 @@ def save_as():
 
 
 def confirm_close():
-    """Close the editor, warning if there are unsaved changes."""
+    """Leave the editor, warning if there are unsaved changes.
+
+    Where 'leaving' goes is decided by :data:`context.on_exit` (set by the
+    launcher): close the window standalone, or return to the main menu embedded.
+    """
     lang = ectx.lang
     if ectx.unsaved_changes:
         if messagebox.askyesno(lang.unsaved_title, lang.unsaved, icon="warning"):
-            music.stop_music()
-            ectx.window.destroy()
+            ectx.on_exit()
     else:
-        music.stop_music()
-        ectx.window.destroy()
+        ectx.on_exit()
 
 
 def not_valid():
