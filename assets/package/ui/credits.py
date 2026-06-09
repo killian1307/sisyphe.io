@@ -6,6 +6,7 @@ from .. import context
 from .. import platform_utils
 from .. import tooltip
 from .. import board
+from .. import view
 from . import widgets
 
 
@@ -15,8 +16,8 @@ def _author_button(text, x, y, role):
     A Label (not a disabled Button) so it renders identically on macOS Aqua.
     """
     btn = tk.Label(context.window, text=text, fg='WHITE', background="black",
-                   font=(context.FONT, 15, 'bold'), height=1)
-    btn.place(x=x, y=y)
+                   font=view.font(15, 'bold'), height=1)
+    view.place(btn, x, y)
     context.monde_buttons.append(btn)
     tooltip.ToolTip(btn, role)
 
@@ -26,6 +27,7 @@ def credits_menu():
     context.sounds.play_sound('button')
     if context.game.process_launched == True:
         return
+    context.rebuild_screen = credits_menu  # so F1 rescales this screen
     board.clear_canvas()
     widgets.clear_buttons_1()
     widgets.clear_bg()
@@ -33,11 +35,11 @@ def credits_menu():
     if context.background_label is None:
         background_image = context.images.main_menu_texture
         context.background_label = tk.Label(context.window, image=background_image)
-        context.background_label.place(x=0, y=0, width=800, height=600)
+        view.place(context.background_label, 0, 0, width=800, height=600)
 
     context.monde_buttons = []
     return_button = widgets.make_return_button()
-    return_button.place(x=625, y=525)
+    view.place(return_button, 625, 525)
     context.monde_buttons.append(return_button)
 
     website_button = widgets.styled_button(
@@ -45,7 +47,7 @@ def credits_menu():
         bg=widgets.PANEL, active_bg=widgets.PANEL_ACTIVE,
         width=18, height=1, border=5, font_size=15,
     )
-    website_button.place(x=400 - website_button.winfo_reqwidth() // 2, y=525)
+    view.place(website_button, 400 - (website_button.winfo_reqwidth() / view.scale) // 2, 525)
     context.monde_buttons.append(website_button)
 
     _author_button("Killian", 540, 265, "Developer, Lead Editor Developer, Game Designer, Web Developer, Level Designer")

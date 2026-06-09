@@ -8,6 +8,7 @@ hole in ``d``.
 """
 from . import context as ectx
 from . import render
+from .. import view
 
 
 def initialize_walls():
@@ -27,11 +28,11 @@ def initialize_walls():
 
 
 def get_selected_cell(event):
-    """Return the (row, col) of the clicked cell."""
+    """Return the (row, col) of the clicked cell (accounts for fullscreen scale)."""
     x = ectx.canvas.canvasx(event.x)
     y = ectx.canvas.canvasy(event.y)
-    row = int(y / 50)
-    col = int(x / 50)
+    row = int((y - view.off_y) / view.cell)
+    col = int((x - view.off_x) / view.cell)
     return row, col
 
 
@@ -43,6 +44,8 @@ def _empty(row, col):
 def place_element(event):
     """Place the active tool's element on the clicked cell (if allowed)."""
     row, col = get_selected_cell(event)
+    if not (0 <= row < 12 and 0 <= col < 16):
+        return  # click landed in the fullscreen letterbox margin
     code = ectx.element_type.get()
     if code == 0:
         delete(row, col)

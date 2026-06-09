@@ -10,6 +10,7 @@ draws its own button, whereas a ``tk.Label`` honors them everywhere.
 import tkinter as tk
 
 from .. import context
+from .. import view
 from . import main_menu
 
 # Recurring palette (from the original inline button definitions).
@@ -27,18 +28,21 @@ class _StyledButton(tk.Label):
 
     def __init__(self, parent, *, text, command, bg, active_bg, fg, active_fg,
                  font, width, border, height=None, state=None, highlight_bg=None,
-                 disabledforeground=None, anchor='center', **_ignore):
+                 disabledforeground=None, anchor='center', image=None, **_ignore):
         opts = dict(
             text=text, background=bg, foreground=fg, font=font,
-            borderwidth=border, relief='raised',
-            highlightthickness=2, highlightbackground=highlight_bg or bg,
+            borderwidth=max(0, round(view.S(border))), relief='raised',
+            highlightthickness=max(1, round(view.S(2))), highlightbackground=highlight_bg or bg,
             highlightcolor='WHITE', anchor=anchor,
         )
+        if image is not None:
+            opts['image'] = image
         if width is not None:
             opts['width'] = width
         if height is not None:
             opts['height'] = height
         super().__init__(parent, **opts)
+        self._image = image  # keep a reference so Tk doesn't drop the icon
         self._bg, self._active_bg = bg, active_bg
         self._fg, self._active_fg = fg, active_fg
         self._command = command
@@ -68,16 +72,16 @@ class _StyledButton(tk.Label):
 
 def styled_button(parent, text, command, *, bg, active_bg, fg='WHITE', active_fg='WHITE',
                   width=10, border=5, font_size=20, height=None, state=None,
-                  highlight_bg=None, **extra):
+                  highlight_bg=None, image=None, **extra):
     """Create a button with the project's recurring styling.
 
     Rendered identically on every platform via :class:`_StyledButton`.
-    ``width`` may be ``None`` to auto-size to the text.
+    ``width`` may be ``None`` to auto-size; pass ``image`` for an icon button.
     """
-    font = (context.FONT, font_size, 'bold')
+    font = view.font(font_size, 'bold')
     return _StyledButton(parent, text=text, command=command, bg=bg, active_bg=active_bg,
                          fg=fg, active_fg=active_fg, font=font, width=width, border=border,
-                         height=height, state=state, highlight_bg=highlight_bg, **extra)
+                         height=height, state=state, highlight_bg=highlight_bg, image=image, **extra)
 
 
 def make_return_button(command=None):

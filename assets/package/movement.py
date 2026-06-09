@@ -27,7 +27,8 @@ def Clavier(event):
     parametres = context.params
     sound_manager = context.sounds
     if jeu.fini == False:  # quand le jeu est fini on ne peux plus se deplacer
-        # on efface le canevas
+        # a key was pressed during play: the board may change -> request a repaint
+        context.needs_redraw = True
 
         mvt_poss = True
         touche = event.keysym

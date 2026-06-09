@@ -69,3 +69,12 @@ door_opened = 0
 
 # --- Custom-level path & editor subprocess ---
 filepath = ""
+
+# --- Fullscreen (F1) ---
+fullscreen = False       # current fullscreen state
+rebuild_screen = None    # callable that redraws the active screen after a rescale
+
+# --- Render-on-demand (the gameplay loop only repaints when this is set,
+#     or when the on-screen second changes) ---
+needs_redraw = True
+last_drawn_sec = -1

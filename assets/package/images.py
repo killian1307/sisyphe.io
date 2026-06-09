@@ -1,74 +1,84 @@
 # -*- coding: utf-8 -*-
 """Loads and holds every Tk image used by the game (was game_images.py).
 
-The only change from the original is that the asset base path is passed to the
-constructor instead of being set as a module global.
+Images are loaded from their source PNGs and (re)built at the current scale via
+:meth:`GameImages.rescale`, so fullscreen can upscale them crisply
+(nearest-neighbour when enlarging, Lanczos when shrinking) without blur. The
+attribute names are stable, so callers don't change when the scale does.
 """
 import os
 
 from PIL import Image, ImageTk
 
+BASE_CELL = 50  # logical cell size (windowed)
+
 
 class GameImages:
     def __init__(self, base_path=''):
         self.base_path = base_path
-        b = base_path
-        self.sisyphe_images = self.load_character_images('sisyphe', ['bas', 'haut', 'gauche', 'droite'], 3)
-        self.ground_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'ground.png'))
-        self.wall_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'wall.png'))
-        self.crate_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'crate.png'))
-        self.button_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'button.png'))
-        self.blue_portal_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'blue_portal.png'))
-        self.red_portal_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'red_portal.png'))
+        self.rescale(1.0)
 
-        self.main_menu_texture = self.load_menu(os.path.join(b, 'assets', 'img', 'menus', 'bg.png'))
-        self.world_menu_texture = self.load_menu(os.path.join(b, 'assets', 'img', 'menus', 'bg_world.png'))
+    def rescale(self, scale):
+        """Rebuild every texture at ``scale`` (1.0 = windowed 50px cells)."""
+        b = self.base_path
+        cell = max(1, round(BASE_CELL * scale))
+        menu_w, menu_h = round(800 * scale), round(600 * scale)
+        logo_w, logo_h = round(300 * scale), round(64 * scale)
 
-        self.settings_menu_texture = self.load_menu(os.path.join(b, 'assets', 'img', 'menus', 'bg_settings.png'))
-        self.logo_texture = self.load_logo(os.path.join(b, 'assets', 'img', 'menus', 'sisyphe.png'))
+        def blocs(name):
+            return os.path.join(b, 'assets', 'img', 'blocs', name)
 
-        self.Trapdoor_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'trapdoor.png'))
-        self.Door_closed_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'door_closed.png'))
-        self.Door_open_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'door_open.png'))
-        self.crate_hole_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'crate_hole.png'))
-        self.wall_cracked_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'wall_cracked.png'))
-        self.box_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'box.png'))
+        def menus(name):
+            return os.path.join(b, 'assets', 'img', 'menus', name)
 
-        self.hammer_off_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'hammer_off.png'))
-        self.hammer_on_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'hammer_on.png'))
-        self.hammer_on_1_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'hammer_on_1.png'))
-        self.hammer_on_2_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'hammer_on_2.png'))
-        self.hammer_on_3_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'hammer_on_3.png'))
+        self.sisyphe_images = self._load_character('sisyphe', ['bas', 'haut', 'gauche', 'droite'], 3, cell)
 
-        self.rope_on_1_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'rope_on_1.png'))
-        self.rope_on_2_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'rope_on_2.png'))
-        self.rope_on_3_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'rope_on_3.png'))
-        self.rope_off_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'rope_off.png'))
-        self.rope_on_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'rope_on.png'))
+        self.ground_texture = self._load(blocs('ground.png'), cell, cell)
+        self.wall_texture = self._load(blocs('wall.png'), cell, cell)
+        self.crate_texture = self._load(blocs('crate.png'), cell, cell)
+        self.button_texture = self._load(blocs('button.png'), cell, cell)
+        self.blue_portal_texture = self._load(blocs('blue_portal.png'), cell, cell)
+        self.red_portal_texture = self._load(blocs('red_portal.png'), cell, cell)
 
-        self.lightbulb_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'lightbulb.png'))
-        self.info_texture = self.load_texture(os.path.join(b, 'assets', 'img', 'blocs', 'info.png'))
+        self.main_menu_texture = self._load(menus('bg.png'), menu_w, menu_h)
+        self.world_menu_texture = self._load(menus('bg_world.png'), menu_w, menu_h)
+        self.settings_menu_texture = self._load(menus('bg_settings.png'), menu_w, menu_h)
+        self.logo_texture = self._load(menus('sisyphe.png'), logo_w, logo_h)
 
-    def load_texture(self, path):
+        self.Trapdoor_texture = self._load(blocs('trapdoor.png'), cell, cell)
+        self.Door_closed_texture = self._load(blocs('door_closed.png'), cell, cell)
+        self.Door_open_texture = self._load(blocs('door_open.png'), cell, cell)
+        self.crate_hole_texture = self._load(blocs('crate_hole.png'), cell, cell)
+        self.wall_cracked_texture = self._load(blocs('wall_cracked.png'), cell, cell)
+        self.box_texture = self._load(blocs('box.png'), cell, cell)
+
+        self.hammer_off_texture = self._load(blocs('hammer_off.png'), cell, cell)
+        self.hammer_on_texture = self._load(blocs('hammer_on.png'), cell, cell)
+        self.hammer_on_1_texture = self._load(blocs('hammer_on_1.png'), cell, cell)
+        self.hammer_on_2_texture = self._load(blocs('hammer_on_2.png'), cell, cell)
+        self.hammer_on_3_texture = self._load(blocs('hammer_on_3.png'), cell, cell)
+
+        self.rope_on_1_texture = self._load(blocs('rope_on_1.png'), cell, cell)
+        self.rope_on_2_texture = self._load(blocs('rope_on_2.png'), cell, cell)
+        self.rope_on_3_texture = self._load(blocs('rope_on_3.png'), cell, cell)
+        self.rope_off_texture = self._load(blocs('rope_off.png'), cell, cell)
+        self.rope_on_texture = self._load(blocs('rope_on.png'), cell, cell)
+
+        self.lightbulb_texture = self._load(blocs('lightbulb.png'), cell, cell)
+        self.info_texture = self._load(blocs('info.png'), cell, cell)
+
+    def _load(self, path, w, h):
         image = Image.open(path)
-        image = image.resize((50, 50), Image.LANCZOS)
+        # Crisp upscaling for the pixel art; smooth shrink for the few big sources.
+        resample = Image.NEAREST if (w >= image.width and h >= image.height) else Image.LANCZOS
+        image = image.resize((w, h), resample)
         return ImageTk.PhotoImage(image)
 
-    def load_menu(self, path):
-        image = Image.open(path)
-        image = image.resize((800, 600), Image.LANCZOS)
-        return ImageTk.PhotoImage(image)
-
-    def load_logo(self, path):
-        image = Image.open(path)
-        image = image.resize((300, 64), Image.LANCZOS)
-        return ImageTk.PhotoImage(image)
-
-    def load_character_images(self, character_name, directions, count):
+    def _load_character(self, character_name, directions, count, cell):
         textures = {}
         for direction in directions:
             textures[direction] = []
             for i in range(1, count + 1):
                 path = os.path.join(self.base_path, 'assets', 'img', 'char', f'{character_name}_{direction}_{i}.png')
-                textures[direction].append(self.load_texture(path))
+                textures[direction].append(self._load(path, cell, cell))
         return textures

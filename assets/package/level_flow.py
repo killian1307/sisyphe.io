@@ -11,6 +11,7 @@ from . import platform_utils
 from . import settings
 from . import board
 from . import render
+from . import view
 from .audio import music
 from .ui import main_menu
 from .ui import widgets
@@ -44,8 +45,8 @@ def affichage_ecran_transition():
         level = lang.end
     else:
         level = jeu.niveau + 1
-    context.canvas.create_text(context.WIDTH / 2, context.HEIGHT / 2 - 30, text=lang.score + str(score_1), fill="white", font=(context.FONT, "30", "bold"))
-    context.canvas.create_text(context.WIDTH / 2, context.HEIGHT / 2 + 30, text=lang.next_level + f"{jeu.numero_monde} - {level}", fill="white", font=(context.FONT, "30", "bold"))
+    context.canvas.create_text(view.X(context.WIDTH / 2), view.Y(context.HEIGHT / 2 - 30), text=lang.score + str(score_1), fill="white", font=view.font("30", "bold"))
+    context.canvas.create_text(view.X(context.WIDTH / 2), view.Y(context.HEIGHT / 2 + 30), text=lang.next_level + f"{jeu.numero_monde} - {level}", fill="white", font=view.font("30", "bold"))
     context.canvas.after(2000, mise_en_place_nouveau_niveau)
 
 
@@ -137,6 +138,7 @@ def show_hint_icon():
     """After 5s, allow re-showing the world's dialog via the info icon."""
     if context.game.fini == False:
         context.hint_bool = True
+        context.needs_redraw = True  # repaint so the icon appears
         context.tutorial_timer = context.window.after(115000, show_tutorial_icon)
 
 
@@ -144,6 +146,7 @@ def show_tutorial_icon():
     """After ~2min, allow accessing the world's solution video via the bulb icon."""
     if context.game.fini == False:
         context.tutorial_bool = True
+        context.needs_redraw = True  # repaint so the icon appears
 
 
 def reset_hint_tutorial():

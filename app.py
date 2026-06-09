@@ -16,6 +16,7 @@ from assets.package import paths
 from assets.package import settings
 from assets.package import platform_utils
 from assets.package import fonts
+from assets.package import view
 from assets.package import images
 from assets.package import game_state
 from assets.package import db
@@ -80,7 +81,31 @@ def build_canvas():
     # Désactive le tab pour éviter des problèmes de focus
     context.window.bind("<Tab>", lambda event: "break")
     context.window.bind("<Shift-Tab>", lambda event: "break")
+
+    # F1 toggles fullscreen (works from any screen via the toplevel binding).
+    context.window.bind("<F1>", toggle_fullscreen)
     return canvas
+
+
+def toggle_fullscreen(event=None):
+    """Toggle fullscreen: rescale the whole UI crisply and re-render the screen."""
+    win = context.window
+    context.fullscreen = not context.fullscreen
+    win.attributes('-fullscreen', context.fullscreen)
+    win.update_idletasks()
+    if context.fullscreen:
+        w, h = win.winfo_width(), win.winfo_height()
+        if w <= view.LOGICAL_W or h <= view.LOGICAL_H:  # geometry not applied yet
+            w, h = win.winfo_screenwidth(), win.winfo_screenheight()
+        view.configure(w, h)
+    else:
+        view.reset()
+        win.geometry(f"{view.LOGICAL_W}x{view.LOGICAL_H}")
+    context.images.rescale(view.scale)
+    context.canvas.config(width=int(view.screen_w), height=int(view.screen_h))
+    # Re-render whatever screen is active at the new scale.
+    if context.rebuild_screen is not None:
+        context.rebuild_screen()
 
 
 def main():

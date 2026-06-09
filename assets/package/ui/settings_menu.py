@@ -7,6 +7,7 @@ from tkinter import messagebox
 from .. import context
 from .. import settings
 from .. import board
+from .. import view
 from . import widgets
 from ..audio import music
 
@@ -89,7 +90,7 @@ def create_direction_button(text, x, y, filename):
         bg=widgets.PANEL, active_bg=widgets.PANEL_ACTIVE,
         width=10, border=3, font_size=15, anchor="center",
     )
-    button.place(x=x, y=y)
+    view.place(button, x, y)
     context.button_widgets.append(button)
 
 
@@ -97,6 +98,7 @@ def create_settings_menu():
     """Build the settings screen."""
     if context.game.process_launched == True:
         return
+    context.rebuild_screen = create_settings_menu  # so F1 rescales this screen
     board.clear_canvas()
     widgets.clear_buttons_1()
     if context.monde_buttons is not None:
@@ -111,50 +113,50 @@ def create_settings_menu():
     lang = context.lang
     game_images = context.images
 
-    Canevas.create_image(400, 300, image=game_images.settings_menu_texture, anchor="center")
-    Canevas.create_image(400, 60, anchor="center", image=game_images.logo_texture)
+    Canevas.create_image(view.X(400), view.Y(300), image=game_images.settings_menu_texture, anchor="center")
+    Canevas.create_image(view.X(400), view.Y(60), anchor="center", image=game_images.logo_texture)
     # Titre, sous-titre et textes à gauche des boutons
-    Canevas.create_text(192, 182, fill='black', font=(context.FONT, "20"), text=lang.up, anchor='e')
-    Canevas.create_text(190, 180, fill='white', font=(context.FONT, "20"), text=lang.up, anchor='e')
+    Canevas.create_text(view.X(192), view.Y(182), fill='black', font=view.font("20"), text=lang.up, anchor='e')
+    Canevas.create_text(view.X(190), view.Y(180), fill='white', font=view.font("20"), text=lang.up, anchor='e')
 
-    Canevas.create_text(532, 282, fill='black', font=(context.FONT, "20"), text=lang.music, anchor='e')
-    Canevas.create_text(530, 280, fill='white', font=(context.FONT, "20"), text=lang.music, anchor='e')
+    Canevas.create_text(view.X(532), view.Y(282), fill='black', font=view.font("20"), text=lang.music, anchor='e')
+    Canevas.create_text(view.X(530), view.Y(280), fill='white', font=view.font("20"), text=lang.music, anchor='e')
 
-    Canevas.create_text(642, 282, fill='black', font=(context.FONT, "20"), text=f"{parametres['volume']['musique']*5} %", anchor='center')
-    Canevas.create_text(640, 280, fill='white', font=(context.FONT, "20"), text=f"{parametres['volume']['musique']*5} %", anchor='center')
+    Canevas.create_text(view.X(642), view.Y(282), fill='black', font=view.font("20"), text=f"{parametres['volume']['musique']*5} %", anchor='center')
+    Canevas.create_text(view.X(640), view.Y(280), fill='white', font=view.font("20"), text=f"{parametres['volume']['musique']*5} %", anchor='center')
 
-    Canevas.create_text(532, 182, fill='black', font=(context.FONT, "20"), text=lang.fps, anchor='e')
-    Canevas.create_text(530, 180, fill='white', font=(context.FONT, "20"), text=lang.fps, anchor='e')
+    Canevas.create_text(view.X(532), view.Y(182), fill='black', font=view.font("20"), text=lang.fps, anchor='e')
+    Canevas.create_text(view.X(530), view.Y(180), fill='white', font=view.font("20"), text=lang.fps, anchor='e')
 
-    Canevas.create_text(192, 232, fill='black', font=(context.FONT, "20"), text=lang.left, anchor='e')
-    Canevas.create_text(190, 230, fill='white', font=(context.FONT, "20"), text=lang.left, anchor='e')
+    Canevas.create_text(view.X(192), view.Y(232), fill='black', font=view.font("20"), text=lang.left, anchor='e')
+    Canevas.create_text(view.X(190), view.Y(230), fill='white', font=view.font("20"), text=lang.left, anchor='e')
 
-    Canevas.create_text(192, 282, fill='black', font=(context.FONT, "20"), text=lang.down, anchor='e')
-    Canevas.create_text(190, 280, fill='white', font=(context.FONT, "20"), text=lang.down, anchor='e')
+    Canevas.create_text(view.X(192), view.Y(282), fill='black', font=view.font("20"), text=lang.down, anchor='e')
+    Canevas.create_text(view.X(190), view.Y(280), fill='white', font=view.font("20"), text=lang.down, anchor='e')
 
-    Canevas.create_text(532, 332, fill='black', font=(context.FONT, "20"), text=lang.sounds, anchor='e')
-    Canevas.create_text(530, 330, fill='white', font=(context.FONT, "20"), text=lang.sounds, anchor='e')
+    Canevas.create_text(view.X(532), view.Y(332), fill='black', font=view.font("20"), text=lang.sounds, anchor='e')
+    Canevas.create_text(view.X(530), view.Y(330), fill='white', font=view.font("20"), text=lang.sounds, anchor='e')
 
-    Canevas.create_text(642, 332, fill='black', font=(context.FONT, "20"), text=f"{parametres['volume']['sons']*5} %", anchor='center')
-    Canevas.create_text(640, 330, fill='white', font=(context.FONT, "20"), text=f"{parametres['volume']['sons']*5} %", anchor='center')
+    Canevas.create_text(view.X(642), view.Y(332), fill='black', font=view.font("20"), text=f"{parametres['volume']['sons']*5} %", anchor='center')
+    Canevas.create_text(view.X(640), view.Y(330), fill='white', font=view.font("20"), text=f"{parametres['volume']['sons']*5} %", anchor='center')
 
-    Canevas.create_text(192, 332, fill='black', font=(context.FONT, "20"), text=lang.right, anchor='e')
-    Canevas.create_text(190, 330, fill='white', font=(context.FONT, "20"), text=lang.right, anchor='e')
+    Canevas.create_text(view.X(192), view.Y(332), fill='black', font=view.font("20"), text=lang.right, anchor='e')
+    Canevas.create_text(view.X(190), view.Y(330), fill='white', font=view.font("20"), text=lang.right, anchor='e')
 
-    Canevas.create_text(532, 232, fill='black', font=(context.FONT, "20"), text=lang.language, anchor='e')
-    Canevas.create_text(530, 230, fill='white', font=(context.FONT, "20"), text=lang.language, anchor='e')
+    Canevas.create_text(view.X(532), view.Y(232), fill='black', font=view.font("20"), text=lang.language, anchor='e')
+    Canevas.create_text(view.X(530), view.Y(230), fill='white', font=view.font("20"), text=lang.language, anchor='e')
 
-    Canevas.create_text(192, 382, fill='black', font=(context.FONT, "20"), text=lang.interact, anchor='e')
-    Canevas.create_text(190, 380, fill='white', font=(context.FONT, "20"), text=lang.interact, anchor='e')
+    Canevas.create_text(view.X(192), view.Y(382), fill='black', font=view.font("20"), text=lang.interact, anchor='e')
+    Canevas.create_text(view.X(190), view.Y(380), fill='white', font=view.font("20"), text=lang.interact, anchor='e')
 
-    Canevas.create_text(192, 432, fill='black', font=(context.FONT, "20"), text=lang.restart, anchor='e')
-    Canevas.create_text(190, 430, fill='white', font=(context.FONT, "20"), text=lang.restart, anchor='e')
+    Canevas.create_text(view.X(192), view.Y(432), fill='black', font=view.font("20"), text=lang.restart, anchor='e')
+    Canevas.create_text(view.X(190), view.Y(430), fill='white', font=view.font("20"), text=lang.restart, anchor='e')
 
-    Canevas.create_text(192, 482, fill='black', font=(context.FONT, "20"), text=lang.menu, anchor='e')
-    Canevas.create_text(190, 480, fill='white', font=(context.FONT, "20"), text=lang.menu, anchor='e')
+    Canevas.create_text(view.X(192), view.Y(482), fill='black', font=view.font("20"), text=lang.menu, anchor='e')
+    Canevas.create_text(view.X(190), view.Y(480), fill='white', font=view.font("20"), text=lang.menu, anchor='e')
 
-    Canevas.create_text(402, 122, fill='black', font=(context.FONT, "25"), text=lang.settings, anchor='center')
-    Canevas.create_text(400, 120, fill='white', font=(context.FONT, "25"), text=lang.settings, anchor='center')
+    Canevas.create_text(view.X(402), view.Y(122), fill='black', font=view.font("25"), text=lang.settings, anchor='center')
+    Canevas.create_text(view.X(400), view.Y(120), fill='white', font=view.font("25"), text=lang.settings, anchor='center')
 
     # Boutons pour afficher et changer les contrôles
     create_direction_button(f'{parametres["controles"]["up"].upper()}', 230, 160, 'up')
@@ -173,11 +175,11 @@ def create_settings_menu():
     button_width_pixels = 214
     window_width = 800
     x_position = (window_width - button_width_pixels) / 2
-    button.place(x=x_position, y=525)
+    view.place(button, x_position, 525)
     context.button_widgets.append(button)
 
     return_button = widgets.make_return_button()
-    return_button.place(x=625, y=525)
+    view.place(return_button, 625, 525)
     context.button_widgets.append(return_button)
 
     if parametres["fps"]["mode"] == 1:
@@ -194,7 +196,7 @@ def create_settings_menu():
         bg=widgets.PANEL, active_bg=widgets.PANEL_ACTIVE,
         width=3, height=1, border=3, font_size=15,
     )
-    fps_button.place(x=570, y=160)
+    view.place(fps_button, 570, 160)
     context.button_widgets.append(fps_button)
 
     fps_show = widgets.styled_button(
@@ -202,7 +204,7 @@ def create_settings_menu():
         bg=widgets.PANEL, active_bg=widgets.PANEL_ACTIVE,
         width=6, height=1, border=3, font_size=15,
     )
-    fps_show.place(x=622, y=160)
+    view.place(fps_show, 622, 160)
     context.button_widgets.append(fps_show)
 
     music_button_minus = widgets.styled_button(
@@ -210,7 +212,7 @@ def create_settings_menu():
         bg=widgets.PANEL, active_bg=widgets.PANEL_ACTIVE,
         width=1, border=3, font_size=15,
     )
-    music_button_minus.place(x=570, y=260)
+    view.place(music_button_minus, 570, 260)
     context.button_widgets.append(music_button_minus)
 
     music_button_plus = widgets.styled_button(
@@ -218,7 +220,7 @@ def create_settings_menu():
         bg=widgets.PANEL, active_bg=widgets.PANEL_ACTIVE,
         width=1, border=3, font_size=15,
     )
-    music_button_plus.place(x=687, y=260)
+    view.place(music_button_plus, 687, 260)
     context.button_widgets.append(music_button_plus)
 
     sound_button_minus = widgets.styled_button(
@@ -226,7 +228,7 @@ def create_settings_menu():
         bg=widgets.PANEL, active_bg=widgets.PANEL_ACTIVE,
         width=1, border=3, font_size=15,
     )
-    sound_button_minus.place(x=570, y=310)
+    view.place(sound_button_minus, 570, 310)
     context.button_widgets.append(sound_button_minus)
 
     sound_button_plus = widgets.styled_button(
@@ -234,7 +236,7 @@ def create_settings_menu():
         bg=widgets.PANEL, active_bg=widgets.PANEL_ACTIVE,
         width=1, border=3, font_size=15,
     )
-    sound_button_plus.place(x=687, y=310)
+    view.place(sound_button_plus, 687, 310)
     context.button_widgets.append(sound_button_plus)
 
     language_button = widgets.styled_button(
@@ -242,7 +244,7 @@ def create_settings_menu():
         bg=widgets.PANEL, active_bg=widgets.PANEL_ACTIVE,
         width=10, height=1, border=3, font_size=15,
     )
-    language_button.place(x=570, y=210)
+    view.place(language_button, 570, 210)
     context.button_widgets.append(language_button)
 
     context.window.after(200, lambda: music.play_music(os.path.join(context.assets_dir, 'assets', 'mus', 'menu_settings.ogg')))

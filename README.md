@@ -94,6 +94,9 @@ The main menu opens with the **Open** and **Editor** buttons grayed out. Finish 
 - **Restart level:** default `R`.
 - **Return to menu:** default `M`.
 - Hold **Shift / Ctrl** to turn in place without moving.
+- **F1** toggles **fullscreen** — the whole game scales up crisply (no blur,
+  gameplay grid unchanged), and the 4:3 board's side bars are filled with tiled
+  wall texture.
 
 All keys are rebindable in the **Settings** menu, along with language (12 available), music/SFX volume and FPS. Position yourself behind a rock and push it into a hole to progress; each world introduces new mechanics with a short tutorial.
 
@@ -101,9 +104,9 @@ All keys are rebindable in the **Settings** menu, along with language (12 availa
 
 ## Level editor
 
-The **Editor** button on the home screen opens the editor **in the same window** (a small **Back** button, top-left, returns to the menu). It lets you build and save your own levels as `.json` files, then load them via the menu's **Open** button. Select a block (keyboard shortcuts or the **Edit** menu), click the grid to place it, and use **File → Save**. A level must contain a player, at least as many rocks as holes, and matching portal/door pairs to be saved.
+The **Editor** button on the home screen opens the editor **in the same window**, with an **in-window toolbar overlay** (top strip: Back / New / Open / Save / Save As / texture+audio toggles; bottom strip: the block tools as icons, active one highlighted). It lets you build and save your own levels as `.json` files, then load them via the menu's **Open** button. Pick a block (toolbar or keyboard shortcut), click the grid to place it, and Save. A level must contain a player, at least as many rocks as holes, and matching portal/door pairs to be saved. All the original keyboard shortcuts still work.
 
-The editor can also be launched on its own with `python assets/editor.py` (a standalone window) — handy for debugging.
+The editor can also be launched on its own with `python assets/editor.py` (a standalone window with a classic menu bar) — handy for debugging.
 
 ## Save data location
 
@@ -148,7 +151,7 @@ sisyphe.io/
 │     ├─ audio/               # music.py + sounds.py
 │     ├─ lang/                # one module per language + catalog.py
 │     └─ ui/                  # main_menu, world_select, settings_menu, credits, dialogs, intro, widgets
-│     └─ editor/              # the level editor (context, tools, placement, render, files, menu, embed, app)
+│     └─ editor/              # the level editor (context, tools, placement, render, files, menu, overlay, embed, app)
 └─ test_levels/               # sample custom levels
 ```
 

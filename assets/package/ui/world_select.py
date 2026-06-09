@@ -11,6 +11,7 @@ from .. import tooltip
 from .. import board
 from .. import level_flow
 from .. import render
+from .. import view
 from . import widgets
 from . import dialogs
 from ..audio import music
@@ -20,6 +21,7 @@ def create_world_selection_menu():
     """Build the world picker; worlds unlock once the previous one is finished."""
     if context.game.process_launched == True:
         return
+    context.rebuild_screen = create_world_selection_menu  # so F1 rescales this screen
     board.clear_canvas()
     widgets.clear_buttons_1()
     if context.monde_buttons is not None:
@@ -29,7 +31,7 @@ def create_world_selection_menu():
     if context.background_label is None:
         background_image = context.images.world_menu_texture
         context.background_label = tk.Label(context.window, image=background_image)
-        context.background_label.place(x=0, y=0, width=800, height=600)
+        view.place(context.background_label, 0, 0, width=800, height=600)
 
     jeu = context.game
 
@@ -100,7 +102,7 @@ def create_world_selection_menu():
             width=10, height=1, border=5, font_size=20, state=states,
             disabledforeground=color4,
         )
-        monde_button.place(x=400 - monde_button.winfo_reqwidth() / 2 + button_pos[i][0], y=button_pos[i][1])
+        view.place(monde_button, 400 - (monde_button.winfo_reqwidth() / view.scale) / 2 + button_pos[i][0], button_pos[i][1])
         context.monde_buttons.append(monde_button)
 
         meilleur_score = db.get_highest_score_and_date(i)
@@ -111,7 +113,7 @@ def create_world_selection_menu():
             tooltip.ToolTip(monde_button, f"{context.lang.best_score_1} {meilleur_score[0]} {context.lang.best_score_2} {meilleur_score[1].split(' ')[0]} {context.lang.best_score_3} {meilleur_score[1].split(' ')[1]} {context.lang.best_score_4}")
 
     return_button = widgets.make_return_button()
-    return_button.place(x=625, y=525)
+    view.place(return_button, 625, 525)
     context.monde_buttons.append(return_button)
 
     reset_save_button = widgets.styled_button(
@@ -119,7 +121,7 @@ def create_world_selection_menu():
         bg=widgets.DANGER, active_bg=widgets.DANGER_ACTIVE,
         width=15, border=5, font_size=15, anchor="center",
     )
-    reset_save_button.place(x=25, y=525)
+    view.place(reset_save_button, 25, 525)
     context.monde_buttons.append(reset_save_button)
 
     context.window.after(200, lambda: music.play_music(os.path.join(context.assets_dir, 'assets', 'mus', 'menu_world.ogg')))

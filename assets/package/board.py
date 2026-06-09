@@ -166,3 +166,4 @@ def genere_niveau(numero_niveau=1, numero_monde=1, mode="Normal", diff=1):
                 jeu.marteau_present = True
             else:
                 jeu.marteau_present = False
+    context.needs_redraw = True  # a fresh level was loaded -> repaint

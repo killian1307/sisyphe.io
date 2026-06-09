@@ -3,6 +3,7 @@
 import tkinter as tk
 
 from .. import context
+from .. import view
 from . import main_menu
 
 _FADE = ["#000000", "#2b2b2b", "#808080", "#c0c0c0", "#ffffff"]
@@ -12,7 +13,7 @@ def start():
     """Hide the cursor and kick off the welcome-text fade sequence."""
     context.canvas.configure(cursor='none')
     label = tk.Label(context.window, text=context.lang.welcome, fg="black", bg="black",
-                     font=(context.FONT, 30, 'bold'), cursor='none')
+                     font=view.font(30, 'bold'), cursor='none')
     label.place(relx=0.5, rely=0.5, anchor="center")
     context.window.after(500, fade_in_text, label)
 

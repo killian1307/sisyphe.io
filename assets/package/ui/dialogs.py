@@ -5,6 +5,7 @@ from tkinter import ttk
 
 from .. import context
 from .. import settings
+from .. import view
 from . import widgets
 
 
@@ -46,7 +47,7 @@ def show_dialog_bottom_screen(world_number):
         dialog_text = tuto_monde[world_number]
         bg_color = '#998070'
         fg_color = 'WHITE'
-        font_style = (context.FONT, 15)
+        font_style = view.font(15)
 
         # Bordure de la boîte
         border_frame = tk.Frame(context.window, background='#433632')
