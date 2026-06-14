@@ -7,9 +7,6 @@
 [![Python](https://img.shields.io/badge/Python-3.10%E2%80%933.14-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)]()
 
-> Other languages: [Español](README.es.md) · [العربية](README.ar.md) · [한국어](README.kr.md)
-> *(translations cover the original text; the setup steps below are the current, cross-platform ones.)*
-
 Sisyphe.io is a **final-year NSI (Digital and Computer Science) project**, winner of the 2024 NSI Trophies at the academic level, created and successfully developed by Killian MILANI, Siméon GILLET, Kylian ROUSSEAU, and Arthur BARBEROUSSE.
 
 A complete **version-by-version changelog** of the project up to the release is available in [doc_nsi_old/changelog.txt](doc_nsi_old/changelog.txt).
